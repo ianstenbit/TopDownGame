@@ -1,0 +1,41 @@
+public class TerrainObject {
+  int idNum;
+  int xCoor;
+  int yCoor; 
+  boolean iExist = true;
+  int breakingCounter = 0;
+  int breakingVal;
+  boolean breaking = false;
+
+  TerrainObject() {
+    idNum = int(random(1, 5));
+    xCoor = int(random(-800, 2400));
+    yCoor = int(random(-800, 2400));
+    breakingVal = 75;
+  } 
+
+  TerrainObject(int x, int y, int num, int breakVal) {
+    idNum = num;
+    xCoor = x;
+    yCoor = y;
+    breakingVal = breakVal;
+  } 
+
+  void create() {
+    if (iExist) {
+      fill(50*idNum);
+      rect(xCoor, yCoor, 75, 75);
+    }
+  }
+
+  void breakMe() {
+    if (breaking) {
+      fill(255, 0, 0, 75);
+      rect(xCoor+player.xPos, yCoor+player.yPos+25,breakingCounter, 25);
+      breakingCounter++;
+    }
+    if(breakingCounter>breakingVal){
+    terrainArray.remove(this);
+    }
+  }
+}
