@@ -1,0 +1,72 @@
+public class PlayerClass {
+  float xPos, yPos;
+  int handleSlot = 1;
+  float xTar = xPos;
+  float yTar = yPos;
+
+  PlayerClass() {
+  }
+
+  void moveWithMouse(float x, float y) {
+    if (!inInventory) {
+      if ((x - width/2)>100 || (x-width/2)<-100) {
+        xPos-=(x-(width/2))/100;
+      } 
+      if ((y-height/2)>100 || (y-height/2)<-100) {
+        yPos-=(y-(height/2))/100;
+      }
+    }
+  }  
+
+  void moveWithClicks(float x, float y) {
+    if (mousePressed) {
+      xTar = x;
+      yTar = y;
+    }
+    xPos-=(xTar-(400))/100;
+    yPos-=(yTar-(400))/100;
+    xTar-=(xTar-(400))/100;
+    yTar-=(yTar-(400))/100;
+    if (xTar-player.xPos > 30 || yTar-player.yPos > 30) {
+      line(xTar - 8, yTar+8, xTar+8, yTar-8);
+      line(xTar - 8, yTar-8, xTar+8, yTar+8);
+    }
+  }  
+
+  void manageInventory() {
+    if (inInventory) {
+      fill(150, 90);
+      rect(200, 730, 400, 40);
+      rect(200, 340, 400, 120);
+      line(200, 380, 600, 380);
+      line(200, 420, 600, 420);
+      for (int i = 0; i <10; i++) {
+        line(200+40*i, 340, 200+40*i, 460);
+      }
+      for (int i = 0; i <10; i++) {
+        line(200+40*i, 730, 200+40*i, 770);
+      }
+    } 
+    else {
+      fill(150, 20);
+      rect(200, 730, 400, 40);
+      for (int i = 0; i <10; i++) {
+        line(200+40*i, 730, 200+40*i, 770);
+      }
+    }
+  }
+
+  void checkForTerrainInteraction() {
+    for (int i = 0; i < terrainArray.size(); i++) {
+      if (mousePressed && mouseX > terrainArray.get(i).xCoor+xPos && mouseY < terrainArray.get(i).xCoor+xPos + 75 && mouseY > terrainArray.get(i).yCoor+yPos && mouseY < terrainArray.get(i).yCoor +yPos+ 75) {
+        // if(player.xPos+400 > terrainArray.get(i).xCoor-20 && player.xPos+400 < terrainArray.get(i).xCoor + 100 && player.yPos+400 > terrainArray.get(i).yCoor-20 && player.yPos + 400 < terrainArray.get(i).yCoor+100){
+        terrainArray.get(i).breaking = true;
+      } 
+      else {
+        terrainArray.get(i).breaking = false;
+     //   terrainArray.get(i).breakingVal = 0;
+      }
+    }
+    //  }
+  }
+}
