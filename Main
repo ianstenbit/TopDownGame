@@ -1,0 +1,38 @@
+boolean inInventory = false;
+PlayerClass player = new PlayerClass();
+InventorySlot[] inventorySlots = new InventorySlot[40];
+ArrayList<TerrainObject> terrainArray;
+
+void setup() {
+  size(800, 800);
+  terrainArray = new ArrayList<TerrainObject>(1);
+  terrainArray.add(new TerrainObject(200, 200, 1, 50));
+}
+
+void draw() {
+  pushMatrix();
+  translate(player.xPos, player.yPos); 
+  background(255);
+  fill(255, 0, 0);              //making
+  rect(-800, -800, 2400, 2400); // a 
+  fill(0, 255, 0);              //test
+  rect(0, 0, width, height);    //world
+  //player.moveWithMouse(mouseX, mouseY);
+  for (int i = 0; i < terrainArray.size(); i++) {
+    terrainArray.get(0).create();
+  }
+  player.checkForTerrainInteraction();
+  popMatrix();
+  player.manageInventory();
+  for (int i = 0; i < terrainArray.size(); i++) {
+    terrainArray.get(0).breakMe();
+  }
+  player.moveWithClicks(mouseX, mouseY);
+}
+
+void keyPressed() {
+  if (key == 'e') {
+    inInventory = !inInventory;
+  }
+  //inventorySlots[(key-48)].inHand = true;
+}
