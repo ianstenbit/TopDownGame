@@ -1,0 +1,31 @@
+public class InventorySlot {
+  int itemNumber;  
+  int slotNumber;
+  boolean inMainBar = false;
+  boolean inHand = false;
+
+  InventorySlot() {
+    if (inMainBar || inInventory)
+    {
+      drawInSlot(slotNumber);
+    }
+  }
+
+
+  void checkMainBar() {
+    for (int i = 0; i < inventorySlots.length; i++) {
+      if (inventorySlots[i].slotNumber <= 10) {
+        inventorySlots[i].inMainBar = true;
+      }
+    }
+  }
+
+  void drawInSlot(int x) {
+    if (inMainBar) {
+      rect(201+40*x, 731, 38, 38);
+    } 
+    else {
+      rect(201+(x%10)*40, 340+(x/10), 38, 38);
+    }
+  }
+}
