@@ -1,43 +1,107 @@
-public class InventorySlot {
-  int itemNumber;  
-  int slotNumber;
-  int countOfItem;
-  boolean inMainBar = false;
-  boolean inHand = false;
-  boolean spaceFull = false;
+//initializing stoofs
+boolean inInventory = false;
+PlayerClass player = new PlayerClass();
+InventorySlot[] inventorySlots = new InventorySlot[40];
+ArrayList<TerrainObject> terrainArray;
+int testVar;
+PFont font;
 
-  InventorySlot() {
-    if (inMainBar || inInventory)
-    {
-      drawInSlot(slotNumber);
-    }
+void setup() {
+  size(800, 800); //setting
+  textAlign(CENTER); //stuff up
+  font = createFont("TimesNewRoman", 12);
+
+  //initializing terrainArray using set number of objects
+  terrainArray = new ArrayList<TerrainObject>();
+  for (int i = 0; i < 20; i++) {
+    terrainArray.add(new TerrainObject());
   }
 
-  void manageScrollOver(int x, int y) {
-    if (inMainBar) {
-      if (x>201+40*(slotNumber) && x<201+(40*slotNumber)+38 && y > 731 && y < 770)
-      {
-        fill(0);
-        text(itemNumber, 220+40*slotNumber, 725);
-      }
-    }
+  //initialize invent array
+  for (int i = 0; i<inventorySlots.length; i++) {
+    inventorySlots[i] = new InventorySlot();
+  }
+}
+
+void draw() {
+  
+  pushMatrix(); //opening translate matrix
+  translate(player.xPos, player.yPos); //translating based on player position
+  background(255); //useless peice of code which is here because it's second nature to put it in
+  fill(255, 0, 0);              //making
+  rect(-800, -800, 2400, 2400); // a 
+  fill(0, 255, 0);              //test
+  rect(0, 0, width, height);    //world
+  
+  //player.moveWithMouse(mouseX, mouseY);
+  //initialize TerrainArray
+  
+  //drawing all of the terrain objects
+  for (int i = 0; i < terrainArray.size(); i++) {
+    terrainArray.get(i).create();
   }
 
-  void checkMainBar() {
-    for (int i = 0; i < inventorySlots.length; i++) {
-      if (inventorySlots[i].slotNumber <= 10) {
-        inventorySlots[i].inMainBar = true;
-      }
-    }
-  }
+  player.checkForTerrainInteraction(); //checks for clicks on each individual terrainobject
+  
+  popMatrix(); //end the translate
 
-  void drawInSlot(int x) {
-    fill(255-(25*itemNumber));
-    if (inMainBar) {
-      rect(201+40*x, 731, 38, 38);
-    } 
-    else {
-      rect(201+(x%10)*40, 340+(x/10), 38, 38);
+  rect(width/2-10,height/2-10,20,20);
+
+  player.manageInventory(); //draw out inventory boxes
+
+  for (int i = 0; i < terrainArray.size(); i++) {
+    terrainArray.get(i).breakMe(); //run the breaking function so that when terrainInteraction
+   //sets a broken value to true, the object will break 
+  }
+  
+  player.moveWithClicks(mouseX, mouseY); //move the player using click input
+
+  //update inventory slots to put in main bar and draw them
+  for (int i = 0; i<inventorySlots.length; i++) {
+    inventorySlots[i].checkMainBar();
+    inventorySlots[i].manageScrollOver(mouseX, mouseY);
+    if (inventorySlots[i].spaceFull) {
+      inventorySlots[i].drawInSlot(inventorySlots[i].slotNumber);
     }
   }
 }
+
+void keyPressed() {
+  if (key == 'e') {
+    inInventory = !inInventory; //allows for opening and closing of inventory using the 'e' key
+  }
+  //inventorySlots[(key-48)].inHand = true;
+}
+
+
+int highestInventorySlot() {
+  while(inventorySlots[testVar].spaceFull) {
+    testVar++;
+  } 
+    return testVar; //returns the highest avaliable inventory slot number
+ 
+
+
+  /*for (int i = 0; i < inventorySlots.length; i++) {
+    if (inventorySlots[i].spaceFull = false) {
+      testVar = i;
+    }
+  }
+  return testVar; */
+}
+
+/*
+To Do:
+- Make it so that when items come into inventory the game checks
+if there are other items with that ID in the inventory already.
+
+- Add pics for each ID in inventoryslot
+
+- CLEAN UP CODE AND COMMENT
+
+- Make TerrainObjects vary in size, and carry that value over to breakingValue
+
+Bug Fixes;
+- Interacting with terrain doesnt work from the right side of it
+
+*/
