@@ -56,10 +56,16 @@ public class PlayerClass {
     }
   }
 
+  boolean collidingWithTerrrain(int x){
+  return true; //just for testing
+  }
+
+
+
   void checkForTerrainInteraction() {
     for (int i = 0; i < terrainArray.size(); i++) {
       if (mousePressed && mouseX > terrainArray.get(i).xCoor+xPos && mouseY < terrainArray.get(i).xCoor+xPos + 75 && mouseY > terrainArray.get(i).yCoor+yPos && mouseY < terrainArray.get(i).yCoor +yPos+ 75) {
-        // if(player.xPos+400 > terrainArray.get(i).xCoor-20 && player.xPos+400 < terrainArray.get(i).xCoor + 100 && player.yPos+400 > terrainArray.get(i).yCoor-20 && player.yPos + 400 < terrainArray.get(i).yCoor+100){
+       // if(collidingWithTerrain(i)){
         terrainArray.get(i).breaking = true;
       } 
       else {
@@ -67,6 +73,6 @@ public class PlayerClass {
         //   terrainArray.get(i).breakingVal = 0;
       }
     }
-    //  }
+   //}
   }
 }
