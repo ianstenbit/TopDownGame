@@ -1,8 +1,10 @@
 public class InventorySlot {
   int itemNumber;  
   int slotNumber;
+  int countOfItem;
   boolean inMainBar = false;
   boolean inHand = false;
+  boolean spaceFull = false;
 
   InventorySlot() {
     if (inMainBar || inInventory)
@@ -11,6 +13,15 @@ public class InventorySlot {
     }
   }
 
+  void manageScrollOver(int x, int y) {
+    if (inMainBar) {
+      if (x>201+40*(slotNumber) && x<201+(40*slotNumber)+38 && y > 731 && y < 770)
+      {
+        fill(0);
+        text(itemNumber, 220+40*slotNumber, 725);
+      }
+    }
+  }
 
   void checkMainBar() {
     for (int i = 0; i < inventorySlots.length; i++) {
@@ -21,6 +32,7 @@ public class InventorySlot {
   }
 
   void drawInSlot(int x) {
+    fill(255-(25*itemNumber));
     if (inMainBar) {
       rect(201+40*x, 731, 38, 38);
     } 
