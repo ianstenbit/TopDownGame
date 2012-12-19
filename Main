@@ -1,3 +1,4 @@
+//initializing stoofs
 boolean inInventory = false;
 PlayerClass player = new PlayerClass();
 InventorySlot[] inventorySlots = new InventorySlot[40];
@@ -6,10 +7,11 @@ int testVar;
 PFont font;
 
 void setup() {
-  size(800, 800);
-
+  size(800, 800); //setting
+  textAlign(CENTER); //stuff up
   font = createFont("TimesNewRoman", 12);
 
+  //initializing terrainArray using set number of objects
   terrainArray = new ArrayList<TerrainObject>();
   for (int i = 0; i < 20; i++) {
     terrainArray.add(new TerrainObject());
@@ -22,29 +24,37 @@ void setup() {
 }
 
 void draw() {
-  textAlign(CENTER);
-  pushMatrix();
-  translate(player.xPos, player.yPos); 
-  background(255);
+  
+  pushMatrix(); //opening translate matrix
+  translate(player.xPos, player.yPos); //translating based on player position
+  background(255); //useless peice of code which is here because it's second nature to put it in
   fill(255, 0, 0);              //making
   rect(-800, -800, 2400, 2400); // a 
   fill(0, 255, 0);              //test
   rect(0, 0, width, height);    //world
+  
   //player.moveWithMouse(mouseX, mouseY);
   //initialize TerrainArray
+  
+  //drawing all of the terrain objects
   for (int i = 0; i < terrainArray.size(); i++) {
     terrainArray.get(i).create();
   }
 
-  player.checkForTerrainInteraction();
-  popMatrix();
+  player.checkForTerrainInteraction(); //checks for clicks on each individual terrainobject
+  
+  popMatrix(); //end the translate
 
-  player.manageInventory();
+  rect(width/2-10,height/2-10,20,20);
+
+  player.manageInventory(); //draw out inventory boxes
 
   for (int i = 0; i < terrainArray.size(); i++) {
-    terrainArray.get(i).breakMe();
+    terrainArray.get(i).breakMe(); //run the breaking function so that when terrainInteraction
+   //sets a broken value to true, the object will break 
   }
-  player.moveWithClicks(mouseX, mouseY);
+  
+  player.moveWithClicks(mouseX, mouseY); //move the player using click input
 
   //update inventory slots to put in main bar and draw them
   for (int i = 0; i<inventorySlots.length; i++) {
@@ -58,16 +68,17 @@ void draw() {
 
 void keyPressed() {
   if (key == 'e') {
-    inInventory = !inInventory;
+    inInventory = !inInventory; //allows for opening and closing of inventory using the 'e' key
   }
   //inventorySlots[(key-48)].inHand = true;
 }
+
 
 int highestInventorySlot() {
   while(inventorySlots[testVar].spaceFull) {
     testVar++;
   } 
-    return testVar;
+    return testVar; //returns the highest avaliable inventory slot number
  
 
 
@@ -78,3 +89,19 @@ int highestInventorySlot() {
   }
   return testVar; */
 }
+
+/*
+To Do:
+- Make it so that when items come into inventory the game checks
+if there are other items with that ID in the inventory already.
+
+- Add pics for each ID in inventoryslot
+
+- CLEAN UP CODE AND COMMENT
+
+- Make TerrainObjects vary in size, and carry that value over to breakingValue
+
+Bug Fixes;
+- Interacting with terrain doesnt work from the right side of it
+
+*/
