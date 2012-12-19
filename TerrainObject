@@ -23,7 +23,7 @@ public class TerrainObject {
 
   void create() {
     if (iExist) {
-      fill(50*idNum);
+      fill(255-25*idNum);
       rect(xCoor, yCoor, 75, 75);
     }
   }
@@ -31,11 +31,14 @@ public class TerrainObject {
   void breakMe() {
     if (breaking) {
       fill(255, 0, 0, 75);
-      rect(xCoor+player.xPos, yCoor+player.yPos+25,breakingCounter, 25);
+      rect(xCoor+player.xPos, yCoor+player.yPos+25, breakingCounter, 25);
       breakingCounter++;
     }
-    if(breakingCounter>breakingVal){
-    terrainArray.remove(this);
+    if (breakingCounter>breakingVal) {
+      terrainArray.remove(this);
+      inventorySlots[highestInventorySlot()].itemNumber = idNum;
+      inventorySlots[highestInventorySlot()].spaceFull = true;
+      inventorySlots[highestInventorySlot()].slotNumber = highestInventorySlot();
     }
   }
 }
