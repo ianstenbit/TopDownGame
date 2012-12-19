@@ -64,7 +64,7 @@ public class PlayerClass {
       } 
       else {
         terrainArray.get(i).breaking = false;
-     //   terrainArray.get(i).breakingVal = 0;
+        //   terrainArray.get(i).breakingVal = 0;
       }
     }
     //  }
