@@ -2,14 +2,27 @@ boolean inInventory = false;
 PlayerClass player = new PlayerClass();
 InventorySlot[] inventorySlots = new InventorySlot[40];
 ArrayList<TerrainObject> terrainArray;
+int testVar;
+PFont font;
 
 void setup() {
   size(800, 800);
-  terrainArray = new ArrayList<TerrainObject>(1);
-  terrainArray.add(new TerrainObject(200, 200, 1, 50));
+
+  font = createFont("TimesNewRoman", 12);
+
+  terrainArray = new ArrayList<TerrainObject>();
+  for (int i = 0; i < 20; i++) {
+    terrainArray.add(new TerrainObject());
+  }
+
+  //initialize invent array
+  for (int i = 0; i<inventorySlots.length; i++) {
+    inventorySlots[i] = new InventorySlot();
+  }
 }
 
 void draw() {
+  textAlign(CENTER);
   pushMatrix();
   translate(player.xPos, player.yPos); 
   background(255);
@@ -18,16 +31,29 @@ void draw() {
   fill(0, 255, 0);              //test
   rect(0, 0, width, height);    //world
   //player.moveWithMouse(mouseX, mouseY);
+  //initialize TerrainArray
   for (int i = 0; i < terrainArray.size(); i++) {
-    terrainArray.get(0).create();
+    terrainArray.get(i).create();
   }
+
   player.checkForTerrainInteraction();
   popMatrix();
+
   player.manageInventory();
+
   for (int i = 0; i < terrainArray.size(); i++) {
-    terrainArray.get(0).breakMe();
+    terrainArray.get(i).breakMe();
   }
   player.moveWithClicks(mouseX, mouseY);
+
+  //update inventory slots to put in main bar and draw them
+  for (int i = 0; i<inventorySlots.length; i++) {
+    inventorySlots[i].checkMainBar();
+    inventorySlots[i].manageScrollOver(mouseX, mouseY);
+    if (inventorySlots[i].spaceFull) {
+      inventorySlots[i].drawInSlot(inventorySlots[i].slotNumber);
+    }
+  }
 }
 
 void keyPressed() {
@@ -35,4 +61,20 @@ void keyPressed() {
     inInventory = !inInventory;
   }
   //inventorySlots[(key-48)].inHand = true;
+}
+
+int highestInventorySlot() {
+  while(inventorySlots[testVar].spaceFull) {
+    testVar++;
+  } 
+    return testVar;
+ 
+
+
+  /*for (int i = 0; i < inventorySlots.length; i++) {
+    if (inventorySlots[i].spaceFull = false) {
+      testVar = i;
+    }
+  }
+  return testVar; */
 }
